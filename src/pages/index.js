@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql } from 'gatsby';
+import { graphql, Link } from 'gatsby';
 import Img from 'gatsby-image';
 import Helmet from 'react-helmet';
 
@@ -29,7 +29,11 @@ const Home = ({ data }) => {
         <meta name='description' content={data.site.siteMetadata.description} />
       </Helmet>
 
-      <Img fixed={data.image.childImageSharp.fixed} />
+      <Link to='/blog'>Blog</Link>
+
+      <div>
+        <Img fixed={data.image.childImageSharp.fixed} />
+      </div>
     </div>
   );
 };
