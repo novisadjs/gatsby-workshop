@@ -1,5 +1,6 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+import Img from 'gatsby-image';
 
 export const pageQuery = graphql`
   query HomeQuery {
@@ -10,7 +11,11 @@ export const pageQuery = graphql`
       }
     }
     image: file(base: {eq: "logo.png"}) {
-      publicURL
+      childImageSharp {
+        fixed(width: 400) {
+          ...GatsbyImageSharpFixed
+        }
+      }
     }
   }
 `;
@@ -21,7 +26,7 @@ const Home = ({ data }) => {
       <h1>{data.site.siteMetadata.title}</h1>
       <p>{data.site.siteMetadata.description}</p>
 
-      <img src={data.image.publicURL} />
+      <Img fixed={data.image.childImageSharp.fixed} />
     </div>
   );
 };
