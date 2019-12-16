@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import Img from 'gatsby-image';
+import Helmet from 'react-helmet';
 
 export const pageQuery = graphql`
   query HomeQuery {
@@ -23,8 +24,10 @@ export const pageQuery = graphql`
 const Home = ({ data }) => {
   return (
     <div>
-      <h1>{data.site.siteMetadata.title}</h1>
-      <p>{data.site.siteMetadata.description}</p>
+      <Helmet>
+        <title>{data.site.siteMetadata.title}</title>
+        <meta name='description' content={data.site.siteMetadata.description} />
+      </Helmet>
 
       <Img fixed={data.image.childImageSharp.fixed} />
     </div>
