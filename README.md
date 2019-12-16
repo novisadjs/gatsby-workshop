@@ -31,3 +31,4 @@ Day 2:
 - [Creating dynamic pages using Gatsby Node API]()
 - [Connecting to Contentful and setting up dotenv]()
 - [Fetching and showing blog posts from Contentful]()
+- [Create a blog layout root component]()
