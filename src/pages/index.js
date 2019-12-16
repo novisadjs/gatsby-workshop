@@ -1,9 +1,22 @@
 import React from 'react';
+import { graphql } from 'gatsby';
 
-const Home = () => {
+export const pageQuery = graphql`
+  query MetadataQuery {
+    site {
+      siteMetadata {
+        title
+        description
+      }
+    }
+  }
+`;
+
+const Home = ({ data }) => {
   return (
     <div>
-      Hello world!
+      <h1>{data.site.siteMetadata.title}</h1>
+      <p>{data.site.siteMetadata.description}</p>
     </div>
   );
 };
