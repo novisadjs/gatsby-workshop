@@ -9,6 +9,7 @@ export const pageQuery = graphql`
           date(fromNow: true)
           title
           author
+          slug
         }
         excerpt
         id
@@ -26,7 +27,9 @@ export default ({ data }) => {
 
       {posts.map(post => (
         <article key={post.id}>
-          <h2>{post.frontmatter.title}</h2>
+          <Link to={`/blog/${post.frontmatter.slug}`}>
+            <h2>{post.frontmatter.title}</h2>
+          </Link>
           <small>{post.frontmatter.author}, {post.frontmatter.date}</small>
           <p>{post.excerpt}</p>
         </article>
