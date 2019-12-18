@@ -1,18 +1,21 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
+import Img from 'gatsby-image';
 
 export const pageQuery = graphql`
-  query MyQuery {
-    blog: allMarkdownRemark {
+  query BlogQuery {
+    blog: allContentfulPost {
       posts: nodes {
-        frontmatter {
-          date(fromNow: true)
-          title
-          author
-          slug
-        }
-        excerpt
         id
+        author
+        createdAt(fromNow: true)
+        slug
+        title
+        thumbnail {
+          fluid {
+            ...GatsbyContentfulFluid
+          }
+        }
       }
     }
   }
@@ -27,11 +30,11 @@ export default ({ data }) => {
 
       {posts.map(post => (
         <article key={post.id}>
-          <Link to={`/blog/${post.frontmatter.slug}`}>
-            <h2>{post.frontmatter.title}</h2>
+          <Link to={`/blog/${post.slug}`}>
+            <h2>{post.title}</h2>
           </Link>
-          <small>{post.frontmatter.author}, {post.frontmatter.date}</small>
-          <p>{post.excerpt}</p>
+          <small>{post.author}, {post.createdAt}</small>
+          <Img fluid={post.thumbnail.fluid} />
         </article>
       ))}
     </div>

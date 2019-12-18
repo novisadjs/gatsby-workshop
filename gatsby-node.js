@@ -3,31 +3,30 @@ const path = require('path')
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions;
 
-  const markdownFiles = await graphql(`
-    query AllMarkdownQuery {
-      allMarkdownRemark {
-        nodes {
-          frontmatter {
-            slug
-          }
+  const response = await graphql(`
+    query ContentfulPostsQuery {
+      blog: allContentfulPost {
+        posts: nodes {
+          slug
         }
       }
-    }`);
+    }
+  `);
 
-  if (markdownFiles.errors) {
+  if (response.errors) {
     reporter.panicOnBuild(`Error while creating pages!`);
     return;
   }
 
-  const blogPostTemplate = path.resolve(`src/templates/blog-post.js`)
+  const blogPostTemplate = path.resolve(`src/templates/blog-post.js`);
 
-  markdownFiles.data.allMarkdownRemark.nodes.forEach((markdownFile) => {
+  response.data.blog.posts.forEach((post) => {
     createPage({
-      path: `blog/${markdownFile.frontmatter.slug}`,
+      path: `blog/${post.slug}`,
       component: blogPostTemplate,
       context: {
-        slug: markdownFile.frontmatter.slug
-      }
-    })
-  })
+        slug: post.slug
+      },
+    });
+  });
 }

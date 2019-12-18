@@ -1,16 +1,24 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+import Img from 'gatsby-image';
 
 export const pageQuery = graphql`
-  query($slug: String!) {
-    post: markdownRemark(frontmatter: { slug: { eq: $slug } }) {
-      frontmatter {
-        author
-        date(fromNow: true)
-        slug
-        title
+  query($slug: String!) { 
+    post: contentfulPost(slug: { eq: $slug }) {
+      author
+      createdAt(fromNow: true)
+      subtitle
+      title
+      thumbnail {
+        fluid {
+          ...GatsbyContentfulFluid
+        }
       }
-      html
+      content {
+        formats: childContentfulRichText {
+          html
+        }
+      }
     }
   }
 `;
@@ -20,9 +28,10 @@ export default ({ data }) => {
 
   return (
     <div>
-      <h1>{post.frontmatter.title}</h1>
-      <small>{post.frontmatter.author}, {post.frontmatter.date}</small>
-      <div dangerouslySetInnerHTML={{ __html: post.html }} />
+      <h1>{post.title}</h1>
+      <small>{post.author}, {post.createdAt}</small>
+      <Img fluid={post.thumbnail.fluid} />
+      <div dangerouslySetInnerHTML={{ __html: post.content.formats.html }} />
     </div>
   );
 };
